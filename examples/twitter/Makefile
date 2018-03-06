@@ -3,7 +3,7 @@
 serve:
 	go run main.go
 
-all: net-http.js xhr.js main net-http
+all: net-http.js xhr.js main net-http demo.js
 
 main: main.go
 	go build -o main main.go
@@ -16,3 +16,6 @@ net-http: net-http.go
 
 xhr.js: xhr.go
 	gopherjs build -o xhr.js xhr.go
+
+demo.js: demo.go
+	gopherjs build -o demo.js demo.go

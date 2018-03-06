@@ -11,7 +11,7 @@ import (
 
 func main() {
 	http.HandleFunc("/tweets", func(w http.ResponseWriter, r *http.Request) {
-		tweets, err := getTweets("nejsconf", "recent", "20")
+		tweets, err := getTweets("nebraskajs", "recent", "20")
 		if err != nil {
 			w.WriteHeader(500)
 			w.Write([]byte(err.Error()))
