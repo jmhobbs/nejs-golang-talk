@@ -179,3 +179,58 @@ GopherJS compiles Go code (golang.org) to pure JavaScript code. Its main purpose
 : Vecty is a React-like framework written in Go
 : The docs on this aren't just bad, they don't even exist.
 
+* Vecty - Hello World
+
+.code -numbers examples/vecty/hello/main.go
+.caption examples/vecty/hello/main.go
+
+: First we declare a Vecty component.
+: Next in main we call the special RenderBody which takes your base component.
+: Finally, we define our Render method for component. All components must have render and return DOM element[s]
+
+* Vecty - Child Components
+
+.code -numbers examples/vecty/image/main.go /START OMIT/,/END OMIT/
+.caption examples/vecty/image/main.go
+
+: Talk about child components here, and component properties.
+
+* Vecty - Events
+
+.code -numbers examples/vecty/event/main.go /START OMIT/,/END OMIT/
+.caption examples/vecty/event/main.go
+
+: AFAIK no built in two way binding, you have to manage that yourself right now.
+: But, I'm just reading code, I don't actually know. No docs.
+
+* Go + JavaScript = ❤️
+
+- WebAssembly Go compiler backend
+
+.link https://github.com/neelance/go/tree/wasm-wip
+
+- Joy
+
+.link https://mat.tm/joy/
+
+- jsgo.io
+
+.link https://github.com/dave/jsgo
+
+- The Go Play Space
+
+.link https://goplay.space/
+
+: The WebAssembly compiler backend has been in progress for a while, and is fairly complete.
+: Joy is an alternative to GopherJS. Different approach, less stdlib implementd yet. Smaller builds, better perf.
+: jsgo.io is a free hosting service for GopherJS projects.
+: https://compile.jsgo.io/github.com/dave/jstest
+: Go Play Space is a nicer version of the Go Playground, written with Vecty and GopherJS
+
+* Shameless Plug
+
+*Omaha*Gophers*
+_March_27th_
+Flywheel Underground
+.link https://www.meetup.com/Omaha-Gophers/
+.image meetup.jpg _ 500
