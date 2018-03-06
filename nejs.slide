@@ -4,9 +4,10 @@ Nebraska JavaScript Meetup
 
 John Hobbs
 Infrastructure Engineer, Flywheel
-john@velvetcache.org
-https://velvetcache.org
+
 @jmhobbs
+
+https://github.com/jmhobbs/nejs-golang-talk
 
 * 
 
@@ -240,7 +241,7 @@ GopherJS compiles Go code (golang.org) to pure JavaScript code. Its main purpose
 : The WebAssembly compiler backend has been in progress for a while, and is fairly complete.
 : Joy is an alternative to GopherJS. Different approach, less stdlib implementd yet. Smaller builds, better perf.
 : jsgo.io is a free hosting service for GopherJS projects.
-: https://compile.jsgo.io/github.com/dave/jstest
+: https://compile.jsgo.io/github.com/jmhobbs/nejs-golang-talk/examples/minimal
 : Go Play Space is a nicer version of the Go Playground, written with Vecty and GopherJS
 
 * Shameless Plug
