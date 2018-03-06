@@ -203,6 +203,22 @@ GopherJS compiles Go code (golang.org) to pure JavaScript code. Its main purpose
 : AFAIK no built in two way binding, you have to manage that yourself right now.
 : But, I'm just reading code, I don't actually know. No docs.
 
+* Glue That Mess Together
+
+.code -numbers examples/twitter/demo.go /START STRUCTS/,/END STRUCTS/
+.caption examples/twitter/demo.go
+
+: Here's my attempt at a "complete" demo with Vecty and the XHR bindings.
+: Messy type conversion.  There's a much better way using encoding/json and struct tags.
+
+* Glue That Mess Together
+
+.code -numbers examples/twitter/demo.go /START RENDER/,/END RENDER/
+.caption examples/twitter/demo.go
+
+: We get to reuse the TweetView each time.
+: Who would ever want to use HTML again?!
+
 * Go + JavaScript = ❤️
 
 - WebAssembly Go compiler backend

@@ -8,6 +8,7 @@ import (
 	"honnef.co/go/js/xhr"
 )
 
+// START STRUCTS OMIT
 type PageView struct {
 	vecty.Core
 	Tweets []*TweetView
@@ -27,6 +28,8 @@ func main() {
 	pv.refresh()
 }
 
+// END STRUCTS OMIT
+
 func (pv *PageView) refresh() {
 	req := xhr.NewRequest("GET", "/tweets")
 	req.ResponseType = "json"
@@ -45,9 +48,9 @@ func (pv *PageView) refresh() {
 
 			pv.Tweets = append(pv.Tweets, &TweetView{
 				Text:       t["text"].(string),
-				Name:       u["name"].(string),              //tweet.Get("user").Get("name").String(),
-				Screenname: u["screen_name"].(string),       //tweet.Get("user").Get("screen_name").String(),
-				Avatar:     u["profile_image_url"].(string), //tweet.Get("user").Get("profile_image_url").String(),
+				Name:       u["name"].(string),
+				Screenname: u["screen_name"].(string),
+				Avatar:     u["profile_image_url"].(string),
 			})
 		}
 		vecty.Rerender(pv)
@@ -70,6 +73,7 @@ func (pv *PageView) Render() vecty.ComponentOrHTML {
 	)
 }
 
+// START RENDER OMIT
 func (tv *TweetView) Render() vecty.ComponentOrHTML {
 	return elem.ListItem(
 		elem.Image(vecty.Markup(prop.Src(tv.Avatar))),
@@ -90,3 +94,5 @@ func (tv *TweetView) Render() vecty.ComponentOrHTML {
 		),
 	)
 }
+
+// END RENDER OMIT
