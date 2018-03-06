@@ -1,0 +1,181 @@
+Go, JavaScript and You
+Nebraska JavaScript Meetup
+6 Mar 2018
+
+John Hobbs
+Infrastructure Engineer, Flywheel
+john@velvetcache.org
+https://velvetcache.org
+@jmhobbs
+
+* 
+
+.image tweet.png
+
+* GopherJS
+
+.image gopherjs.png
+
+GopherJS compiles Go code (golang.org) to pure JavaScript code. Its main purpose is to give you the opportunity to write front-end code in Go which will still run in all browsers.
+
+.link https://github.com/gopherjs/gopherjs
+
+: More than a transpiler, it brings along a runtime as well.
+: It has bindings to existing JS libs like Vue, React, Electron, etc.
+
+* Good God, why would you do this?
+
+- For the ❤️ of Go
+- Code sharing from front to back end
+- Use existing Go packages
+- Because you can!
+
+.image gopher.jpg
+
+* How does it work?
+
+- Write your Go, use pretty much anything.
+- Compiles to JavaScript
+- Bakes in a runtime for channels, etc.
+- Take your JS and use it.
+
+.code examples/minimal/main.go
+.caption examples/minimal/main.go
+
+  $ gopherjs serve
+  serving at http://localhost:8080 and on port 8080 of any available addresses
+
+.link http://localhost:8080/github.com/jmhobbs/nejs-golang-talk/examples/minimal/
+
+: That's it.  Let's check out some code.
+: println is aliased to console.log
+: // +build js is for gopherjs serve to know to build it
+: Then it's available as the package import path.
+: If you know Go, you might wonder why not fmt package. It makes the JS heavy.
+
+* Bindings
+
+- DOM
+- XHR
+- Canvas
+- Vue
+- React
+- WebGL
+- jQuery
+- Electron
+- And many more.
+
+.link https://github.com/gopherjs/gopherjs/wiki/bindings
+
+: There are bidings for lots of things.
+: Bindings make your Go terse and more idiomatic.
+: Lots available, you can make your own too.
+
+* DOM  - honnef.co/go/js/dom
+
+  <button id="click-me">Click Me</button>
+  <div id="target"></div>
+  <script src="dom.js"></script>
+
+.caption examples/dom/index.html
+
+.code -numbers examples/dom/main.go /START OMIT/,/END OMIT/
+.caption examples/dom/main.go
+
+: Here's using the DOM binding package.
+: We get references to our target div and a button.
+: Then we add a click handler which appends a div to our target.
+
+* net/http Requests
+
+.code -numbers examples/twitter/net-http.go /START OMIT/,/END OMIT/
+.caption examples/twitter/net-http.go
+
+: You don't have to use bindings for everything though, you can use built ins too.
+: This example is getting some Tweets from the Twitter search API with net/http.
+: There's a little shim server on :9090 that does the call to twitter for us since they don't do JSONP or anything. DEMO
+: This same code runs fine as a Go binary. DEMO
+: Not a great idea in production though, because it brings in a whole TLS stack.
+
+* XHR - honnef.co/go/js/xhr
+
+.code -numbers examples/twitter/xhr.go /START OMIT/,/END OMIT/
+.caption examples/twitter/xhr.go
+
+  6.8M	net-http.js
+  132K	xhr.js
+.caption Yeah, so maybe don't bring in all of net/http
+
+: This version is wrapping an XHR directly, so we can use some JS bulit in things like JSON parsing directly.
+: This demonstrates an important point, be careful of your imports.  There is no dead code elimination, it all comes in.
+: So, this is great if there is a binding for your library, but how do we use it if there isn't one for our code yet?
+
+* jsTodoTxt
+
+  // Fresh new item!
+  var newItem = new TodoTxtItem();
+  newItem.text = "Cool!";
+
+  // Create an item from a string
+  var existingItem = new TodoTxtItem( "(A) Try out jsTodoTxt" );
+  console.log( existingItem.priority ); // Logs "A"
+
+.caption Usage example from github.com/jmhobbs/jsTodoTxt
+
+.code -numbers examples/binding/main.go /START STRUCT/,/END STRUCT/
+.caption examples/binding/main.go
+
+: Library for the todo.txt format.
+: First we create a struct to represent the JS object.
+: *js.Object is the GopherJS "bridge" object.
+: GopherJS will map object properties for you if you use struct tags.
+
+* jsTodoTxt
+
+.code -numbers examples/binding/main.go /START FUNC/,/END FUNC/
+.caption examples/binding/main.go
+
+: At the top we make a convenience initializer.
+: Then we wrap some method calls.
+: Lastly, in main we use them to demonstrate it.
+: Cool, fairly easy.  What if we want to expose Go code to JavaScript?
+
+* js.MakeWrapper
+
+.code -numbers examples/export/main.go /START STRUCT/,/END STRUCT/
+.caption examples/export/main.go
+
+: Walk through our "router"
+: js.MakeWrapper is a convenience method to wrap all the public methods of a struct in a JS object.
+
+* js.Global
+
+.code -numbers examples/export/main.go /START GLOBAL/,/END GLOBAL/
+.caption examples/export/main.go
+
+  <script src="export.js"></script>
+  <script>
+    var router = new Router();
+    router.Set("/hello", function () { console.log("Hello World!"); });
+    router.Get("/hello")();
+    console.log(router.Get("/goodbye"));
+  </script>
+.caption examples/export/index.html
+
+: Now we just use js.Global (which is window in browsers) to make our new constructor avaliable.
+: Ok, so that's the basics of how to use GopherJS, welcome to JavaScript 5 or more years ago, but in Go.
+
+* Vecty
+
+- Share frontend and backend code.
+- Write everything in Go -- not JS/HTML/CSS!
+- XSS protection: unsafe HTML must be explicitly denoted as such.
+- Reusability: share components by making Go packages that others can import!
+
+.link https://github.com/gopherjs/vecty
+
+*Unstable!*
+
+: Vecty is a React-like framework written in Go
+: The docs on this aren't just bad, they don't even exist.
+
