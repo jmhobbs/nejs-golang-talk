@@ -1,0 +1,760 @@
+<!DOCTYPE html>
+<!-- saved from url=(0034)http://127.0.0.1:3999/nejs.slide#1 -->
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <title>Go, JavaScript and You</title>
+    
+    <script>
+      var notesEnabled =  false ;
+    </script>
+    <script src="./Go, JavaScript and You_files/slides.js"></script>
+
+    
+
+    <script>
+      
+      if (window["location"] && window["location"]["hostname"] == "talks.golang.org") {
+        var _gaq = _gaq || [];
+        _gaq.push(["_setAccount", "UA-11222381-6"]);
+        _gaq.push(["b._setAccount", "UA-49880327-6"]);
+        window.trackPageview = function() {
+          _gaq.push(["_trackPageview", location.pathname+location.hash]);
+          _gaq.push(["b._trackPageview", location.pathname+location.hash]);
+        };
+        window.trackPageview();
+        window.trackEvent = function(category, action, opt_label, opt_value, opt_noninteraction) {
+          _gaq.push(["_trackEvent", category, action, opt_label, opt_value, opt_noninteraction]);
+          _gaq.push(["b._trackEvent", category, action, opt_label, opt_value, opt_noninteraction]);
+        };
+      }
+    </script>
+  <meta name="viewport" content="width=device-width,height=device-height,initial-scale=1"><meta name="apple-mobile-web-app-capable" content="yes"></head>
+
+  <body style="display: none" class="loaded">
+
+    <section class="slides layout-widescreen">
+
+      <article class="current">
+        <h1>Go, JavaScript and You</h1>
+        <h3>Nebraska JavaScript Meetup</h3>
+        <h3>6 March 2018</h3>
+        
+          <div class="presenter">
+            
+  
+  <p>
+    John Hobbs
+  </p>
+  
+
+  
+  <p>
+    Infrastructure Engineer, Flywheel
+  </p>
+  
+
+          </div>
+        
+          <div class="presenter">
+            
+          </div>
+        
+          <div class="presenter">
+            
+          </div>
+        
+      </article>
+
+  
+  
+      <article class="next">
+      
+        <h3></h3>
+        
+<div class="image">
+  <img src="./Go, JavaScript and You_files/tweet.png">
+</div>
+
+      
+      </article>
+  
+  
+  
+      <article class="far-next">
+      
+        <h3>GopherJS</h3>
+        
+<div class="image">
+  <img src="./Go, JavaScript and You_files/gopherjs.png">
+</div>
+
+  
+  <p>
+    GopherJS compiles Go code (golang.org) to pure JavaScript code. Its main purpose is to give you the opportunity to write front-end code in Go which will still run in all browsers.
+  </p>
+  
+<p class="link"><a href="https://github.com/gopherjs/gopherjs" target="_blank">github.com/gopherjs/gopherjs</a></p>
+      
+      </article>
+  
+  
+  
+      <article>
+      
+        <h3>Good God, why would you do this?</h3>
+        
+  <ul>
+  
+    <li>For the ❤️ of Go</li>
+  
+    <li>Code sharing from front to back end</li>
+  
+    <li>Use existing Go packages</li>
+  
+    <li>Because you can!</li>
+  
+  </ul>
+
+<div class="image">
+  <img src="./Go, JavaScript and You_files/gopher.jpg">
+</div>
+
+      
+      </article>
+  
+  
+  
+      <article>
+      
+        <h3>How does it work?</h3>
+        
+  <ul>
+  
+    <li>Write your Go, use pretty much anything.</li>
+  
+    <li>Compiles to JavaScript</li>
+  
+    <li>Bakes in a runtime for channels, etc.</li>
+  
+    <li>Take your JS and use it.</li>
+  
+  </ul>
+
+  <div class="code">
+
+
+<pre><span num="1"><b>// +build js</b></span>
+<span num="2">package main</span>
+<span num="3"></span>
+<span num="4">func main() {</span>
+<span num="5">    <b>println("Hello From Go")</b></span>
+<span num="6">}</span>
+</pre>
+
+
+</div>
+<figcaption>examples/minimal/main.go</figcaption>
+  
+  <div class="code"><pre>$ gopherjs serve
+serving at http://localhost:8080 and on port 8080 of any available addresses</pre></div>
+  
+<p class="link"><a href="http://localhost:8080/github.com/jmhobbs/nejs-golang-talk/examples/minimal/" target="_blank">localhost:8080/github.com/jmhobbs/nejs-golang-talk/examples/minimal/</a></p>
+      
+      </article>
+  
+  
+  
+      <article>
+      
+        <h3>Bindings</h3>
+        
+  <ul>
+  
+    <li>DOM</li>
+  
+    <li>XHR</li>
+  
+    <li>Canvas</li>
+  
+    <li>Vue</li>
+  
+    <li>React</li>
+  
+    <li>WebGL</li>
+  
+    <li>jQuery</li>
+  
+    <li>Electron</li>
+  
+    <li>And many more.</li>
+  
+  </ul>
+<p class="link"><a href="https://github.com/gopherjs/gopherjs/wiki/bindings" target="_blank">github.com/gopherjs/gopherjs/wiki/bindings</a></p>
+      
+      </article>
+  
+  
+  
+      <article>
+      
+        <h3>DOM  - honnef.co/go/js/dom</h3>
+        
+  
+  <div class="code"><pre>&lt;button id="click-me"&gt;Click Me&lt;/button&gt;
+&lt;div id="target"&gt;&lt;/div&gt;
+&lt;script src="dom.js"&gt;&lt;/script&gt;</pre></div>
+  
+<figcaption>examples/dom/index.html</figcaption>
+  <div class="code">
+
+
+<pre class="numbers"><span num="12">func main() {</span>
+<span num="13">    d := dom.GetWindow().Document()</span>
+<span num="14"></span>
+<span num="15">    container := d.GetElementByID("target").(*dom.HTMLDivElement)</span>
+<span num="16">    button := d.GetElementByID("click-me").(*dom.HTMLButtonElement)</span>
+<span num="17"></span>
+<span num="18">    button.AddEventListener("click", false, func(event dom.Event) {</span>
+<span num="19">        div := d.CreateElement("div").(*dom.HTMLDivElement)</span>
+<span num="20">        div.SetTextContent(fmt.Sprintf("I was created at %v", time.Now()))</span>
+<span num="21">        container.AppendChild(div)</span>
+<span num="22">    })</span>
+<span num="23">}</span>
+</pre>
+
+
+</div>
+<figcaption>examples/dom/main.go</figcaption>
+      
+      </article>
+  
+  
+  
+      <article>
+      
+        <h3>net/http Requests</h3>
+        
+  <div class="code">
+
+
+<pre class="numbers"><span num="10">func main() {</span>
+<span num="11">    <b>resp, err := http.Get("http://localhost:9090/tweets")</b></span>
+<span num="12">    if err != nil {</span>
+<span num="13">        println(err)</span>
+<span num="14">        return</span>
+<span num="15">    }</span>
+<span num="16"></span>
+<span num="17">    if resp.StatusCode == 200 {</span>
+<span num="18">        <b>b, err := ioutil.ReadAll(resp.Body)</b></span>
+<span num="19">        if err != nil {</span>
+<span num="20">            println(err)</span>
+<span num="21">            return</span>
+<span num="22">        }</span>
+<span num="23"></span>
+<span num="24">        println(string(b))</span>
+<span num="25">    }</span>
+<span num="26">    println(resp.Status)</span>
+<span num="27">}</span>
+</pre>
+
+
+</div>
+<figcaption>examples/twitter/net-http.go</figcaption>
+      
+      </article>
+  
+  
+  
+      <article>
+      
+        <h3>XHR - honnef.co/go/js/xhr</h3>
+        
+  <div class="code">
+
+
+<pre class="numbers"><span num="9">func main() {</span>
+<span num="10">    req := xhr.NewRequest("GET", "/tweets")</span>
+<span num="11">    <b>req.ResponseType = "json"</b></span>
+<span num="12">    err := req.Send(nil)</span>
+<span num="13">    if err != nil {</span>
+<span num="14">        println(err)</span>
+<span num="15">        return</span>
+<span num="16">    }</span>
+<span num="17"></span>
+<span num="18">    if req.Status == 200 {</span>
+<span num="19">        println(req.Response)</span>
+<span num="20">    }</span>
+<span num="21">    println(req.StatusText)</span>
+<span num="22">}</span>
+</pre>
+
+
+</div>
+<figcaption>examples/twitter/xhr.go</figcaption>
+  
+  <div class="code"><pre>6.8M    net-http.js
+132K    xhr.js</pre></div>
+  
+<figcaption>Yeah, so maybe don't bring in all of net/http</figcaption>
+      
+      </article>
+  
+  
+  
+      <article>
+      
+        <h3>jsTodoTxt</h3>
+        
+  
+  <div class="code"><pre>// Fresh new item!
+var newItem = new TodoTxtItem();
+newItem.text = "Cool!";
+
+// Create an item from a string
+var existingItem = new TodoTxtItem( "(A) Try out jsTodoTxt" );
+console.log( existingItem.priority ); // Logs "A"</pre></div>
+  
+<figcaption>Usage example from github.com/jmhobbs/jsTodoTxt</figcaption>
+  <div class="code">
+
+
+<pre class="numbers"><span num="11">type TodoTxtItem struct {</span>
+<span num="12">    <b>*js.Object</b></span>
+<span num="13">    Text       string    `js:"text"`</span>
+<span num="14">    Priority   string    `js:"priority"`</span>
+<span num="15">    Complete   bool      `js:"complete"`</span>
+<span num="16">    Completed  time.Time `js:"completed"`</span>
+<span num="17">    Date       time.Time `js:"date"`</span>
+<span num="18">    Contexts   []string  `js:"contexts"`</span>
+<span num="19">    Projects   []string  `js:"projects"`</span>
+<span num="20">}</span>
+</pre>
+
+
+</div>
+<figcaption>examples/binding/main.go</figcaption>
+      
+      </article>
+  
+  
+  
+      <article>
+      
+        <h3>jsTodoTxt</h3>
+        
+  <div class="code">
+
+
+<pre class="numbers"><span num="25">func NewTodoTxtItem() *TodoTxtItem {</span>
+<span num="26">    return &amp;TodoTxtItem{Object: js.Global.Get("TodoTxtItem").New()}</span>
+<span num="27">}</span>
+<span num="28"></span>
+<span num="29">func (ti *TodoTxtItem) Parse(item string) {</span>
+<span num="30">    ti.Call("parse", item)</span>
+<span num="31">}</span>
+<span num="32"></span>
+<span num="33">func (ti *TodoTxtItem) ToString() string {</span>
+<span num="34">    return ti.Call("toString").String()</span>
+<span num="35">}</span>
+<span num="36"></span>
+<span num="37">func main() {</span>
+<span num="38">    ti := NewTodoTxtItem()</span>
+<span num="39">    ti.Parse("(A) Try out jsTodoTxt @Computer")</span>
+<span num="40">    println("Text:", ti.Text)</span>
+<span num="41">    println("Priority:", ti.Priority)</span>
+<span num="42">    println("Context:", ti.Contexts[0])</span>
+<span num="43">    ti.Priority = "B"</span>
+<span num="44">    println(ti.ToString())</span>
+<span num="45">}</span>
+</pre>
+
+
+</div>
+<figcaption>examples/binding/main.go</figcaption>
+      
+      </article>
+  
+  
+  
+      <article>
+      
+        <h3>js.MakeWrapper</h3>
+        
+  <div class="code">
+
+
+<pre class="numbers"><span num="9">type Router struct {</span>
+<span num="10">    routes map[string]*js.Object</span>
+<span num="11">}</span>
+<span num="12"></span>
+<span num="13">func (r Router) Set(route string, target *js.Object) {</span>
+<span num="14">    r.routes[route] = target</span>
+<span num="15">}</span>
+<span num="16"></span>
+<span num="17">func (r Router) Get(route string) *js.Object {</span>
+<span num="18">    return r.routes[route]</span>
+<span num="19">}</span>
+<span num="20"></span>
+<span num="21">func NewRouter() *js.Object {</span>
+<span num="22">    router := Router{make(map[string]*js.Object)}</span>
+<span num="23">    <b>return js.MakeWrapper(router)</b></span>
+<span num="24">}</span>
+</pre>
+
+
+</div>
+<figcaption>examples/export/main.go</figcaption>
+      
+      </article>
+  
+  
+  
+      <article>
+      
+        <h3>js.Global</h3>
+        
+  <div class="code">
+
+
+<pre class="numbers"><span num="29">func main() {</span>
+<span num="30">    <b>js.Global.Set("Router", NewRouter)</b></span>
+<span num="31">}</span>
+</pre>
+
+
+</div>
+<figcaption>examples/export/main.go</figcaption>
+  
+  <div class="code"><pre>&lt;script src="export.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+  var router = new Router();
+  router.Set("/hello", function () { console.log("Hello World!"); });
+  router.Get("/hello")();
+  console.log(router.Get("/goodbye"));
+&lt;/script&gt;</pre></div>
+  
+<figcaption>examples/export/index.html</figcaption>
+      
+      </article>
+  
+  
+  
+      <article>
+      
+        <h3>Vecty</h3>
+        
+  <ul>
+  
+    <li>Share frontend and backend code.</li>
+  
+    <li>Write everything in Go -- not JS/HTML/CSS!</li>
+  
+    <li>XSS protection: unsafe HTML must be explicitly denoted as such.</li>
+  
+    <li>Reusability: share components by making Go packages that others can import!</li>
+  
+  </ul>
+<p class="link"><a href="https://github.com/gopherjs/vecty" target="_blank">github.com/gopherjs/vecty</a></p>
+  
+  <p>
+    <b>Unstable!</b>
+  </p>
+  
+
+      
+      </article>
+  
+  
+  
+      <article>
+      
+        <h3>Vecty - Hello World</h3>
+        
+  <div class="code">
+
+
+<pre class="numbers"><span num="1">package main</span>
+<span num="2"></span>
+<span num="3">import (</span>
+<span num="4">    "github.com/gopherjs/vecty"</span>
+<span num="5">    "github.com/gopherjs/vecty/elem"</span>
+<span num="6">)</span>
+<span num="7"></span>
+<span num="8">type HelloWorldComponent struct {</span>
+<span num="9">    vecty.Core</span>
+<span num="10">}</span>
+<span num="11"></span>
+<span num="12">func main() {</span>
+<span num="13">    vecty.RenderBody(&amp;HelloWorldComponent{})</span>
+<span num="14">}</span>
+<span num="15"></span>
+<span num="16">func (hw *HelloWorldComponent) Render() vecty.ComponentOrHTML {</span>
+<span num="17">    return elem.Body(</span>
+<span num="18">        vecty.Markup(vecty.Class("vecty-root-container")),</span>
+<span num="19">        vecty.Text("Hello World!"),</span>
+<span num="20">    )</span>
+<span num="21">}</span>
+</pre>
+
+
+</div>
+<figcaption>examples/vecty/hello/main.go</figcaption>
+      
+      </article>
+  
+  
+  
+      <article>
+      
+        <h3>Vecty - Child Components</h3>
+        
+  <div class="code">
+
+
+<pre class="numbers"><span num="18">func (hw *HelloWorldComponent) Render() vecty.ComponentOrHTML {</span>
+<span num="19">    return elem.Body(</span>
+<span num="20">        elem.Heading1(vecty.Text("Hello World!")),</span>
+<span num="21">        <b>&amp;ImageComponent{Image: "gopher.jpg", Caption: "Flight Ready Gopher"},</b></span>
+<span num="22">    )</span>
+<span num="23">}</span>
+<span num="24"></span>
+<span num="25">type ImageComponent struct {</span>
+<span num="26">    vecty.Core</span>
+<span num="27">    Image   string</span>
+<span num="28">    Caption string</span>
+<span num="29">}</span>
+<span num="30"></span>
+<span num="31">func (im *ImageComponent) Render() vecty.ComponentOrHTML {</span>
+<span num="32">    return elem.Div(</span>
+<span num="33">        <b>elem.Image(vecty.Markup(prop.Src(im.Image))),</b></span>
+<span num="34">        elem.Span(vecty.Text(im.Caption)),</span>
+<span num="35">    )</span>
+<span num="36">}</span>
+</pre>
+
+
+</div>
+<figcaption>examples/vecty/image/main.go</figcaption>
+      
+      </article>
+  
+  
+  
+      <article>
+      
+        <h3>Vecty - Events</h3>
+        
+  <div class="code">
+
+
+<pre class="numbers"><span num="16">func main() {</span>
+<span num="17">    <b>vecty.RenderBody(&amp;HelloWorldComponent{HelloWhat: "World!"})</b></span>
+<span num="18">}</span>
+<span num="19"></span>
+<span num="20">func (hw *HelloWorldComponent) Render() vecty.ComponentOrHTML {</span>
+<span num="21">    return elem.Body(</span>
+<span num="22">        elem.Heading1(vecty.Text("Hello "+hw.HelloWhat)),</span>
+<span num="23">        elem.Input(</span>
+<span num="24">            vecty.Markup(</span>
+<span num="25">                prop.Value(hw.HelloWhat),</span>
+<span num="26">                <b>event.Input(func(e *vecty.Event) {</b></span>
+<span num="27">                    hw.HelloWhat = e.Target.Get("value").String()</span>
+<span num="28">                    <b>vecty.Rerender(hw)</b></span>
+<span num="29">                }),</span>
+<span num="30">            ),</span>
+<span num="31">        ),</span>
+<span num="32">    )</span>
+<span num="33">}</span>
+</pre>
+
+
+</div>
+<figcaption>examples/vecty/event/main.go</figcaption>
+      
+      </article>
+  
+  
+  
+      <article>
+      
+        <h3>Glue That Mess Together</h3>
+        
+  <div class="code">
+
+
+<pre class="numbers"><span num="12">type PageView struct {</span>
+<span num="13">    vecty.Core</span>
+<span num="14">    Tweets []*TweetView</span>
+<span num="15">}</span>
+<span num="16"></span>
+<span num="17">type TweetView struct {</span>
+<span num="18">    vecty.Core</span>
+<span num="19">    Text       string</span>
+<span num="20">    Name       string</span>
+<span num="21">    Screenname string</span>
+<span num="22">    Avatar     string</span>
+<span num="23">}</span>
+<span num="24"></span>
+<span num="25">func main() {</span>
+<span num="26">    pv := &amp;PageView{}</span>
+<span num="27">    vecty.RenderBody(pv)</span>
+<span num="28">    pv.refresh()</span>
+<span num="29">}</span>
+</pre>
+
+
+</div>
+<figcaption>examples/twitter/demo.go</figcaption>
+      
+      </article>
+  
+  
+  
+      <article>
+      
+        <h3>Glue That Mess Together</h3>
+        
+  <div class="code">
+
+
+<pre class="numbers"><span num="77">func (tv *TweetView) Render() vecty.ComponentOrHTML {</span>
+<span num="78">    return elem.ListItem(</span>
+<span num="79">        elem.Image(vecty.Markup(prop.Src(tv.Avatar))),</span>
+<span num="80">        elem.Div(</span>
+<span num="81">            vecty.Markup(vecty.Class("user")),</span>
+<span num="82">            elem.Span(</span>
+<span num="83">                vecty.Markup(vecty.Class("username")),</span>
+<span num="84">                vecty.Text(tv.Name),</span>
+<span num="85">            ),</span>
+<span num="86">            elem.Span(</span>
+<span num="87">                vecty.Markup(vecty.Class("screenname")),</span>
+<span num="88">                vecty.Text("@"+tv.Screenname),</span>
+<span num="89">            ),</span>
+<span num="90">        ),</span>
+<span num="91">        elem.Div(</span>
+<span num="92">            vecty.Markup(vecty.Class("tweet")),</span>
+<span num="93">            vecty.Text(tv.Text),</span>
+<span num="94">        ),</span>
+<span num="95">    )</span>
+<span num="96">}</span>
+</pre>
+
+
+</div>
+<figcaption>examples/twitter/demo.go</figcaption>
+      
+      </article>
+  
+  
+  
+      <article>
+      
+        <h3>Go + JavaScript = ❤️</h3>
+        
+  <ul>
+  
+    <li>WebAssembly Go compiler backend</li>
+  
+  </ul>
+<p class="link"><a href="https://github.com/neelance/go/tree/wasm-wip" target="_blank">github.com/neelance/go/tree/wasm-wip</a></p>
+  <ul>
+  
+    <li>Joy</li>
+  
+  </ul>
+<p class="link"><a href="https://mat.tm/joy/" target="_blank">mat.tm/joy/</a></p>
+  <ul>
+  
+    <li>jsgo.io</li>
+  
+  </ul>
+<p class="link"><a href="https://github.com/dave/jsgo" target="_blank">github.com/dave/jsgo</a></p>
+  <ul>
+  
+    <li>The Go Play Space</li>
+  
+  </ul>
+<p class="link"><a href="https://goplay.space/" target="_blank">goplay.space/</a></p>
+      
+      </article>
+  
+  
+  
+      <article>
+      
+        <h3>Shameless Plug</h3>
+        
+  
+  <p>
+    <b>Omaha Gophers</b>
+<br>
+
+    <i>March 27th</i>
+<br>
+
+    Flywheel Underground
+  </p>
+  
+<p class="link"><a href="https://www.meetup.com/Omaha-Gophers/" target="_blank">www.meetup.com/Omaha-Gophers/</a></p>
+<div class="image">
+  <img src="./Go, JavaScript and You_files/meetup.jpg" width="500">
+</div>
+
+      
+      </article>
+  
+  
+
+      <article>
+        <h3>Thank you</h3>
+        
+          <div class="presenter">
+            
+  
+  <p>
+    John Hobbs
+  </p>
+  
+
+  
+  <p>
+    Infrastructure Engineer, Flywheel
+  </p>
+  
+
+          </div>
+        
+          <div class="presenter">
+            <p class="link"><a href="http://twitter.com/jmhobbs" target="_blank">@jmhobbs</a></p>
+          </div>
+        
+          <div class="presenter">
+            <p class="link"><a href="https://github.com/jmhobbs/nejs-golang-talk" target="_blank">https://github.com/jmhobbs/nejs-golang-talk</a></p>
+          </div>
+        
+      </article>
+
+    <div class="slide-area" id="prev-slide-area"></div><div class="slide-area" id="next-slide-area"></div></section>
+
+    <div id="help" style="display: none;">
+      Use the left and right arrow keys or click the left and right
+      edges of the page to navigate between slides.<br>
+      (Press 'H' or navigate to hide this message.)
+    </div>
+
+    
+    <script src="./Go, JavaScript and You_files/play.js"></script>
+    
+
+    <script>
+      (function() {
+        
+        if (window["location"] && window["location"]["hostname"] == "talks.golang.org") {
+          var ga = document.createElement("script"); ga.type = "text/javascript"; ga.async = true;
+          ga.src = ("https:" == document.location.protocol ? "https://ssl" : "http://www") + ".google-analytics.com/ga.js";
+          var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(ga, s);
+        }
+      })();
+    </script>
+  
+
+<link rel="stylesheet" type="text/css" href="./Go, JavaScript and You_files/css"><link rel="stylesheet" type="text/css" href="./Go, JavaScript and You_files/styles.css"></body></html>
